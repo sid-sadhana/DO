@@ -24,18 +24,11 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nginx') {
+        stage('Serve React App') {
             steps {
-                sh '''
-                sudo rm -rf /var/www/react-app
-                sudo mv firstcicd/myapp/build /var/www/react-app
-                '''
-            }
-        }
-
-        stage('Restart Nginx') {
-            steps {
-                sh 'sudo systemctl restart nginx'
+                dir('firstcicd/myapp') {
+                    sh 'npx serve -s build -l 3000 &'
+                }
             }
         }
     }
