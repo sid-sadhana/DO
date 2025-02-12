@@ -27,7 +27,7 @@ pipeline {
         stage('Serve React App') {
             steps {
                 dir('firstcicd/myapp') {
-                    sh 'npx serve -s build -l 3000 --host 0.0.0.0'
+                    sh 'serve -s build'
                 }
             }
         }
