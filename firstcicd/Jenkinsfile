@@ -11,7 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('firstcicd/myapp') {
-                    sh 'npm install'
+                    sh 'npm install --no-fund --no-audit'
                 }
             }
         }
