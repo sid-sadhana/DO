@@ -1,13 +1,47 @@
-
 pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
-  stages {
-    stage('Test') {
-      steps {
-        sh 'node --version'
-      }
+    agent any  
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/YOUR_REACT_REPO.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Move Build to Nginx Directory') {
+            steps {
+                sh '''
+                sudo rm -rf /var/www/react-app
+                sudo mv build /var/www/react-app
+                '''
+            }
+        }
+
+        stage('Restart Nginx') {
+            steps {
+                sh 'sudo systemctl restart nginx'
+            }
+        }
     }
-  }
+
+    post {
+        success {
+            echo '✅ Deployment Successful!'
+        }
+        failure {
+            echo '❌ Deployment Failed!'
+        }
+    }
 }
