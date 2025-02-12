@@ -27,7 +27,7 @@ pipeline {
         stage('Serve React App') {
             steps {
                 dir('firstcicd/myapp') {
-                    sh 'serve -s build'
+                    sh 'nohup serve -s build -l 3000 > /dev/null 2>&1 &' 
                 }
             }
         }
